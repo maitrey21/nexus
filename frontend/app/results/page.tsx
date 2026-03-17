@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, FileText, Download, Table } from "lucide-react";
 import Link from "next/link";
+import PageLockGuard from "@/components/PageLockGuard";
 import "@fontsource/share-tech-mono";
 
 interface ResultEntry {
@@ -28,6 +29,7 @@ export default function PublicResultsPage() {
   }, []);
 
   return (
+    <PageLockGuard pageKey="results">
     <div className="min-h-screen relative" style={{ background: "#020403" }}>
       {/* Scanline overlay */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-10"
@@ -138,5 +140,6 @@ export default function PublicResultsPage() {
         )}
       </div>
     </div>
+    </PageLockGuard>
   );
 }

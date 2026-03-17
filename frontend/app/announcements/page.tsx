@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
+import PageLockGuard from "@/components/PageLockGuard";
 import "@fontsource/share-tech-mono";
 
 interface Announcement {
@@ -28,6 +29,7 @@ export default function PublicAnnouncementsPage() {
   }, []);
 
   return (
+    <PageLockGuard pageKey="announcements">
     <div className="min-h-screen relative" style={{ background: "#020403" }}>
       {/* Scanline overlay */}
       <div
@@ -131,5 +133,6 @@ export default function PublicAnnouncementsPage() {
         )}
       </div>
     </div>
+    </PageLockGuard>
   );
 }
