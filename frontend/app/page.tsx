@@ -102,7 +102,7 @@ const RETURN_QUOTE = "Every exit is an entry somewhere else.";
 const HERO_RETURN_QUOTE = "Follow the white rabbit.";
 const QUOTE_DURATION = 2500;
 
-function TopLeftHud({ show }: { show: boolean }) {
+function TopLeftHud({ show, activeView }: { show: boolean, activeView?: string }) {
   const [ping, setPing] = useState(12);
 
   useEffect(() => {
@@ -175,10 +175,12 @@ function TopLeftHud({ show }: { show: boolean }) {
                 <span>▮▮▮▮ SIGNAL</span>
               </div>
 
-              <div className="mt-1 h-4 text-[12px] tracking-[0.1em] text-green-300/70">
-                <span className="text-green-400/60">:: </span>
-                ORGANIZED BY TINKERS ECS
-              </div>
+              {(activeView === "hero" || activeView === "portals") && (
+                <div className="mt-1 h-4 text-[12px] tracking-[0.1em] text-green-300/70">
+                  <span className="text-green-400/60">:</span>
+                  ORGANIZED BY TINKERER'S ECS
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -196,6 +198,17 @@ export default function TeaserPage() {
   const [pendingView, setPendingView] = useState<ViewType>("portals");
   const flickerRepeatDelay = 10;
   const showNavbar = activeView !== "hero" || phase === 2;
+
+  // Check URL params — skip boot if returning from external page
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("view") === "portals") {
+      setPhase(2);
+      setActiveView("portals");
+      // Clean the URL
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   const handlePortalSelect = (sectionId: string) => {
     // Direct navigation to portals (from "ENTER THE SYSTEM") — no quote needed
@@ -326,7 +339,7 @@ export default function TeaserPage() {
 
   return (
     <div
-      className={`bg-black text-green-400 font-mono relative h-screen ${activeView === "timeline"
+      className={`bg-black text-green-400 font-mono relative h-screen ${(activeView === "timeline" || activeView === "sponsors")
           ? "overflow-y-auto overflow-x-hidden"
           : "overflow-hidden"
         }`}
@@ -356,7 +369,7 @@ export default function TeaserPage() {
         }}
       />
 
-      <TopLeftHud show={showNavbar} />
+      <TopLeftHud show={showNavbar} activeView={activeView} />
 
       <AnimatePresence mode="wait">
         {activeView === "hero" && (
@@ -419,6 +432,24 @@ export default function TeaserPage() {
                 className="text-center max-w-3xl space-y-6 sm:space-y-12 px-2"
               >
                 <div className="relative">
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.0, ease: "easeOut" }}
+                    className="mb-4 sm:mb-6 flex flex-col items-center"
+                  >
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                      <Image src="/assets/tink.png" alt="Tinkerer's Lab" width={60} height={60} className="object-contain" />
+                      <p className="text-lg sm:text-2xl md:text-3xl tracking-wide leading-relaxed font-bold text-center" style={{ color: "rgba(0,230,118,0.6)" }}>
+                        Department of Electronics and Computer Science
+                      </p>
+                      <Image src="/assets/ves.png" alt="VES" width={60} height={60} className="object-contain" />
+                    </div>
+                    <p className="text-base sm:text-xl md:text-2xl tracking-wide leading-relaxed mt-2 sm:mt-4 text-center" style={{ color: "rgba(125,255,178,0.6)" }}>
+                      Tinkerer&apos;s Lab ECS presents
+                    </p>
+                  </motion.div>
+
                   <motion.h1
                     animate={{
                       x: showGlitch ? [-2, 2, -1, 1, 0] : 0,

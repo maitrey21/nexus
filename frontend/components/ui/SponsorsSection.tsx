@@ -10,13 +10,14 @@ interface SponsorsSectionProps {
 
 const N8N_COLOR = "#EA4B71"
 const ELECTROLYTE_COLOR = "#FFD700"
+const UNSTOP_COLOR = "#FF6B35"
+const GMC_COLOR = "#4A90D9"
 const MATRIX_GREEN = "#00ff41"
 
 export default function SponsorsSection({ onReturn }: SponsorsSectionProps) {
   const [bootSequence, setBootSequence] = useState(0)
 
   useEffect(() => {
-    // Sequence boot animations
     const t1 = setTimeout(() => setBootSequence(1), 500)
     const t2 = setTimeout(() => setBootSequence(2), 1200)
     const t3 = setTimeout(() => setBootSequence(3), 2000)
@@ -29,7 +30,7 @@ export default function SponsorsSection({ onReturn }: SponsorsSectionProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-20 overflow-y-auto overflow-x-hidden"
+      className="relative min-h-screen flex flex-col items-center px-4 sm:px-6 py-20 pb-28 overflow-y-auto overflow-x-hidden"
       style={{ background: "#020403" }}
     >
       {/* Background Image Overlay */}
@@ -83,43 +84,73 @@ export default function SponsorsSection({ onReturn }: SponsorsSectionProps) {
           </p>
         </motion.div>
 
-        {/* Sponsor Cards Layout */}
-        <div className="relative flex flex-col md:flex-row items-center justify-center gap-10 md:gap-24">
-          
-          {/* Subtle node connection line (Visible on desktop between cards) */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-px hidden md:block opacity-50 z-0">
-             <div className="w-full h-full relative" style={{ background: "linear-gradient(to right, rgba(0,255,65,0.2), rgba(0,255,65,0.8), rgba(0,255,65,0.2))" }}>
-                {bootSequence >= 3 && (
-                   <motion.div 
-                     initial={{ left: "0%" }}
-                     animate={{ left: "100%" }}
-                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                     className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full shadow-[0_0_8px_#00ff41]"
-                     style={{ background: MATRIX_GREEN }}
-                   />
-                )}
-             </div>
-          </div>
+        {/* 2x2 Grid + Connection Lines */}
+        <div className="relative">
+          {/* SVG Connection Lines */}
+          <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none hidden md:block" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+            {/* Horizontal top line */}
+            <line x1="200" y1="130" x2="600" y2="130" stroke="rgba(0,255,65,0.2)" strokeWidth="1" />
+            {/* Horizontal bottom line */}
+            <line x1="200" y1="370" x2="600" y2="370" stroke="rgba(0,255,65,0.2)" strokeWidth="1" />
+            {/* Vertical left line */}
+            <line x1="200" y1="130" x2="200" y2="370" stroke="rgba(0,255,65,0.2)" strokeWidth="1" />
+            {/* Vertical right line */}
+            <line x1="600" y1="130" x2="600" y2="370" stroke="rgba(0,255,65,0.2)" strokeWidth="1" />
+            {/* Diagonal lines */}
+            <line x1="200" y1="130" x2="600" y2="370" stroke="rgba(0,255,65,0.1)" strokeWidth="1" />
+            <line x1="600" y1="130" x2="200" y2="370" stroke="rgba(0,255,65,0.1)" strokeWidth="1" />
 
-          <SponsorCard 
-            sponsorName="n8n"
-            sponsorColor={N8N_COLOR}
-            linkText="n8n.io"
-            bootSequence={bootSequence}
-            delay={0}
-          >
-             <div className="flex justify-center items-center w-full h-24">
-                <img 
-                   src="/assets/n8n-logo.png" 
-                   alt="n8n logo"
-                   className="h-full w-auto object-contain brightness-0 invert opacity-90 transition-all duration-300 group-hover:opacity-100 group-hover:brightness-100 group-hover:invert-0"
-                   style={{
-                     filter: "brightness(0) invert(1)" // initially white, on hover it transitions in CSS
-                   }}
-                />
-             </div>
-          </SponsorCard>
+            {/* Traveling dots */}
+            {bootSequence >= 3 && (
+              <>
+                <circle r="3" fill={MATRIX_GREEN} filter="url(#glow)">
+                  <animateMotion dur="3s" repeatCount="indefinite" path="M200,130 L600,130" />
+                </circle>
+                <circle r="3" fill={MATRIX_GREEN} filter="url(#glow)">
+                  <animateMotion dur="4s" repeatCount="indefinite" path="M200,370 L600,370" />
+                </circle>
+                <circle r="3" fill={MATRIX_GREEN} filter="url(#glow)">
+                  <animateMotion dur="3.5s" repeatCount="indefinite" path="M200,130 L200,370" />
+                </circle>
+                <circle r="3" fill={MATRIX_GREEN} filter="url(#glow)">
+                  <animateMotion dur="4.5s" repeatCount="indefinite" path="M600,130 L600,370" />
+                </circle>
+              </>
+            )}
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
 
+          {/* Cards Grid */}
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-3xl mx-auto">
+            {/* Row 1 Col 1: Unstop */}
+            <SponsorCard 
+              sponsorName="UNSTOP"
+              sponsorColor={UNSTOP_COLOR}
+              linkText="unstop.com"
+              bootSequence={bootSequence}
+              delay={0}
+            >
+              <div className="flex justify-center items-center w-full h-24">
+                <div className="flex items-center gap-2">
+                  <img 
+                    src="/assets/unstop.png" 
+                    alt="Unstop logo"
+                    className="h-16 w-auto object-contain transition-all duration-300"
+                  />
+            
+                </div>
+              </div>
+            </SponsorCard>
+
+            {/* Row 1 Col 2: Electrolyte */}
             <SponsorCard 
               sponsorName="ELECTROLYTE"
               sponsorColor={ELECTROLYTE_COLOR}
@@ -127,7 +158,6 @@ export default function SponsorsSection({ onReturn }: SponsorsSectionProps) {
               bootSequence={bootSequence}
               delay={0.2}
             >
-              {/* Electrolyte custom image logo */}
               <div className="relative flex items-center justify-center w-[250px] h-[100px] overflow-hidden transition-all duration-300">
                 <div className="absolute w-[250px] h-[250px] flex items-center justify-center pointer-events-none group-hover:scale-105 transition-transform duration-300">
                   <img 
@@ -139,10 +169,70 @@ export default function SponsorsSection({ onReturn }: SponsorsSectionProps) {
               </div>
             </SponsorCard>
 
+            {/* Row 2 Col 1: n8n */}
+            <SponsorCard 
+              sponsorName="n8n"
+              sponsorColor={N8N_COLOR}
+              linkText="n8n.io"
+              bootSequence={bootSequence}
+              delay={0.4}
+            >
+               <div className="flex justify-center items-center w-full h-24">
+                 <img 
+                    src="/assets/n8n-logo.png" 
+                    alt="n8n logo"
+                    className="h-full w-auto object-contain brightness-0 invert opacity-90 transition-all duration-300 group-hover:opacity-100 group-hover:brightness-100 group-hover:invert-0"
+                    style={{
+                      filter: "brightness(0) invert(1)"
+                    }}
+                 />
+               </div>
+            </SponsorCard>
+
+            {/* Row 2 Col 2: Give My Certificate */}
+            <SponsorCard 
+              sponsorName="GIVE MY CERTIFICATE"
+              sponsorColor={GMC_COLOR}
+              linkText="givemycertificate.com"
+              bootSequence={bootSequence}
+              delay={0.6}
+            >
+              <div className="flex justify-center items-center w-full h-24">
+                {/* JSX text-based logo recreation */}
+                <div className="flex items-center gap-3 transition-all duration-300">
+                  {/* Triangle/Arrow icon */}
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <polygon 
+                      points="20,4 36,36 4,36" 
+                      fill="none" 
+                      stroke="#4A90D9" 
+                      strokeWidth="2.5"
+                      strokeLinejoin="round"
+                    />
+                    <polygon 
+                      points="20,14 28,30 12,30" 
+                      fill="#4A90D9" 
+                      opacity="0.4"
+                    />
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-white font-bold text-sm tracking-wide leading-tight">
+                      Give My
+                    </div>
+                    <div className="text-white font-bold text-sm tracking-wide leading-tight">
+                      Certificate
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SponsorCard>
+          </div>
         </div>
       </div>
 
-      <ReturnPortalButton onReturn={onReturn} />
+      <div className="flex justify-center mt-12 mb-8">
+        <ReturnPortalButton onReturn={onReturn} fixed={false} />
+      </div>
     </motion.section>
   )
 }
@@ -159,10 +249,10 @@ function SponsorCard({
         initial={{ opacity: 0, scale: 0.95 }}
         animate={bootSequence >= 1 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.5, delay: delay }}
-        className="group relative w-[280px] sm:w-[320px] bg-[rgba(0,0,0,0.7)] p-6 cursor-pointer overflow-hidden transition-all duration-300"
+        className="group relative w-full bg-[rgba(0,0,0,0.7)] p-6 cursor-pointer overflow-hidden transition-all duration-300"
         style={{
           border: `1px solid ${MATRIX_GREEN}`,
-          boxShadow: `inset 0 0 30px ${sponsorColor}26`, // 0.15 hex is ~26
+          boxShadow: `inset 0 0 30px ${sponsorColor}26`,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.borderColor = sponsorColor
@@ -189,7 +279,7 @@ function SponsorCard({
             />
          )}
 
-         {/* Matrix rain hover effect context overlay */}
+         {/* Matrix rain hover effect overlay */}
          <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none overflow-hidden z-0 flex whitespace-pre font-mono text-xs text-[#00ff41] flex-wrap items-start justify-start p-2 leading-none">
             {Array.from({length: 100}).map((_, i) => Math.random() > 0.5 ? '1' : '0').join(' ')}
             <br />

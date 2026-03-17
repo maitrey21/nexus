@@ -21,9 +21,7 @@ import Link from "next/link";
 import PageLockGuard from "@/components/PageLockGuard";
 import "@fontsource/share-tech-mono";
 
-// Placeholder links — replace with actual links later
-const UNSTOP_LINK = "#";
-const GOOGLE_FORM_LINK = "#";
+const UNSTOP_LINK = "https://unstop.com/o/i2YbERj?utm_medium=Share&utm_source=WhatsApp";
 
 export default function PublicSubmitPage() {
   const [activeTab, setActiveTab] = useState<"home" | "submit">("home");
@@ -50,7 +48,7 @@ export default function PublicSubmitPage() {
         <div className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           {/* Back link */}
           <Link
-            href="/"
+            href="/?view=portals"
             className="inline-flex items-center gap-2 text-xs tracking-widest mb-8 transition-colors group"
             style={{ color: "rgba(159,230,184,0.5)", fontFamily: "'Share Tech Mono', monospace" }}
           >
@@ -174,14 +172,12 @@ export default function PublicSubmitPage() {
                       border: "1px solid rgba(255,100,0,0.3)",
                     }}
                   >
-                    <div className="w-8 h-8 relative shrink-0 rounded overflow-hidden bg-white flex items-center justify-center">
-                      <Image
-                        src="/assets/unstop-logo.png"
-                        alt="Unstop"
-                        width={28}
-                        height={28}
-                        className="object-contain"
-                      />
+                    <div className="w-8 h-8 relative shrink-0 rounded overflow-hidden flex items-center justify-center">
+                      <img 
+                    src="/assets/unstop.png" 
+                    alt="Unstop logo"
+                    className="h-16 w-auto object-contain transition-all duration-300"
+                  />
                     </div>
                     <div className="flex-1 text-left">
                       <div className="text-xs tracking-widest" style={{ color: "#ff8c42" }}>
@@ -200,39 +196,7 @@ export default function PublicSubmitPage() {
                     />
                   </a>
 
-                  {/* Google Form Button */}
-                  <a
-                    href={GOOGLE_FORM_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center gap-3 px-5 py-3.5 transition-all duration-200 group/btn"
-                    style={{
-                      background: "rgba(66,133,244,0.08)",
-                      border: "1px solid rgba(66,133,244,0.3)",
-                    }}
-                  >
-                    <div
-                      className="w-8 h-8 shrink-0 flex items-center justify-center"
-                      style={{ background: "rgba(66,133,244,0.15)", border: "1px solid rgba(66,133,244,0.25)" }}
-                    >
-                      <FileText className="w-4 h-4" style={{ color: "#4285f4" }} />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <div className="text-xs tracking-widest" style={{ color: "#4285f4" }}>
-                        GOOGLE FORM
-                      </div>
-                      <div
-                        className="text-[9px] tracking-wider mt-0.5"
-                        style={{ color: "rgba(66,133,244,0.5)" }}
-                      >
-                        ADDITIONAL REGISTRATION DETAILS
-                      </div>
-                    </div>
-                    <ExternalLink
-                      className="w-4 h-4 shrink-0 transition-transform group-hover/btn:translate-x-1"
-                      style={{ color: "rgba(66,133,244,0.5)" }}
-                    />
-                  </a>
+
                 </div>
 
                 {/* Bottom glow */}

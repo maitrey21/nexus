@@ -74,7 +74,7 @@ export default function DomainPage() {
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#020403" }}>
         <div className="text-center" style={{ fontFamily: "'Share Tech Mono', monospace", color: "#ff4444" }}>
           <p className="text-xl tracking-widest mb-4">DOMAIN NOT FOUND</p>
-          <Link href="/" className="text-xs tracking-widest" style={{ color: "rgba(159,230,184,0.5)" }}>
+          <Link href="/?view=portals" className="text-xs tracking-widest" style={{ color: "rgba(159,230,184,0.5)" }}>
             ← RETURN TO MAIN TERMINAL
           </Link>
         </div>
